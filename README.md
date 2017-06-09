@@ -1,5 +1,5 @@
 # backend
-Gin + Mongo backend with Facebook &amp; email authentication. Replaces much of the functionality of the defunct Parse Baas
+Gin + Mongo backend with Facebook & email authentication. Custom implementation that replaces much of the functionality of the defunct Parse Baas
 
 Sample Env file:
 ```
