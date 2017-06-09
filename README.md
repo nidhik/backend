@@ -2,7 +2,7 @@
 Gin + Mongo backend with Facebook &amp; email authentication. Replaces much of the functionality of the defunct Parse Baas
 
 Sample Env file:
-
+```
 PATH=$GOROOT/bin:/usr/local/bin:$PATH
 
 LITEIDE_GDB=/usr/local/bin/gdb
@@ -23,3 +23,4 @@ FB_APP_ACCESS_TOKEN=<fbappid>|<fbappsecret>
 MY_FB_TOKEN=<fb-oauthtoken>
 MY_FB_ID=<fb-id>
 ALLOWED_ORIGIN=*
+```
