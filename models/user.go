@@ -33,7 +33,7 @@ type User struct {
 	FirstName      string                 `json:"firstName,omitempty" bson:"firstName"`
 	Gender         string                 `json:"gender,omitempty" bson:"gender"`
 	AuthData       map[string]interface{} `json:"-" bson:"_auth_data_facebook,omitempty"`
-	CompletedPlans db.Relation            `json:"-" bson:"-"`
+	CustomFields   map[string]interface{} `json:"customFields" bson:"customFields,omitempty"`
 	db.BaseModel   `bson:",inline"`
 }
 
@@ -45,6 +45,7 @@ func NewUser(id string) *User {
 }
 
 func NewEmptyUser() *User {
+
 	return &User{
 		BaseModel: db.BaseModel{CollectionName: CollectionUser},
 	}
@@ -173,6 +174,16 @@ func (user *User) CustomUnmarshall() {
 
 func (user *User) IsFacebook() bool {
 	return user.AuthData["id"] != nil
+}
+
+func (user *User) SetCustomField(key string, val interface{}) {
+	dst := make(map[string]interface{})
+	for k, v := range user.CustomFields {
+		dst[k] = v
+	}
+
+	dst[key] = val
+	user.Set("CustomFields", dst)
 }
 
 func CountUsersWithUsernameOrEmail(ds db.DataStore, username string, email string) (int, error) {

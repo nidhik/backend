@@ -7,6 +7,44 @@ import (
 	"github.com/nidhik/backend/models"
 )
 
+func TestSetCustomFields(t *testing.T) {
+	RunTest(t, func(t *testing.T, ds db.DataStore) {
+		user, err := models.NewUserFromEmail("foo@bar.com", "foofoo", "abc", "")
+		AssertNoError(t, "Could not set up test user:", err)
+
+		err = user.Save(ds)
+		AssertNoError(t, "Could not set up test user:", err)
+
+		tests := []struct {
+			user     *models.User
+			fieldKey string
+			fieldVal interface{}
+		}{
+			{user, "ABCDEFG", "blah"},
+			{user, "balance", 50000},
+		}
+
+		for _, test := range tests {
+			user.SetCustomField(test.fieldKey, test.fieldVal)
+
+			if user.CustomFields[test.fieldKey] != test.fieldVal {
+				t.Fatal("Did not set expected customer field. Expected", test.fieldVal, "Was:", user.CustomFields[test.fieldKey], "Fields: ", user.CustomFields)
+			}
+
+			user.Save(ds)
+			if user.CustomFields[test.fieldKey] != test.fieldVal {
+				t.Fatal("Did not set expected customer field after saving. Expected", test.fieldVal, "Was:", user.CustomFields[test.fieldKey], "Fields: ", user.CustomFields)
+			}
+
+			user.Fetch(ds)
+			if user.CustomFields[test.fieldKey] != test.fieldVal {
+				t.Fatal("Did not set expected customer field after reloading. Expected", test.fieldVal, "Was:", user.CustomFields[test.fieldKey], "Fields: ", user.CustomFields)
+			}
+
+		}
+	})
+}
+
 func TestChangePassword(t *testing.T) {
 
 	RunTest(t, func(t *testing.T, ds db.DataStore) {
