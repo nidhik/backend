@@ -22,10 +22,14 @@ func TestSetCustomFields(t *testing.T) {
 		}{
 			{user, "ABCDEFG", "blah"},
 			{user, "balance", 50000},
+			{user, "game", "foobarbax"},
 		}
 
-		for _, test := range tests {
+		for i, test := range tests {
 			user.SetCustomField(test.fieldKey, test.fieldVal)
+			if len(user.CustomFields) != i+1 {
+				t.Fatal("Not right length Fields: ", user.CustomFields)
+			}
 
 			if user.CustomFields[test.fieldKey] != test.fieldVal {
 				t.Fatal("Did not set expected customer field. Expected", test.fieldVal, "Was:", user.CustomFields[test.fieldKey], "Fields: ", user.CustomFields)

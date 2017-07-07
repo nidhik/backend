@@ -177,10 +177,7 @@ func (user *User) IsFacebook() bool {
 }
 
 func (user *User) SetCustomField(key string, val interface{}) {
-	dst := make(map[string]interface{})
-	for k, v := range user.CustomFields {
-		dst[k] = v
-	}
+	dst, _ := Map(user.CustomFields)
 
 	dst[key] = val
 	user.Set("CustomFields", dst)
